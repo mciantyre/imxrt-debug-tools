@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, trying ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: rustup toolchain install stable --no-self-update --profile minimal
+    - run: cargo fmt --all --check
+  
+  clippy:
+    needs: format
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: sudo apt-get install -y libudev-dev
+    - run: rustup toolchain install stable --no-self-update --profile minimal --component clippy
+    - run: cargo clippy --workspace -- -D warnings
+
+  test:
+    needs: format
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: sudo apt-get install -y libudev-dev
+    - run: rustup toolchain install stable --no-self-update --profile minimal
+    - run: cargo test --workspace
+
+  doclinks:
+    needs: format
+    runs-on: ubuntu-latest
+    env:
+      RUSTDOCFLAGS: -D warnings
+    steps:
+    - uses: actions/checkout@v4
+    - run: sudo apt-get install -y libudev-dev
+    - run: rustup toolchain install stable --no-self-update --profile minimal
+    - run: cargo doc --no-deps
