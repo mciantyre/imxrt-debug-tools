@@ -44,21 +44,20 @@ impl RootClock {
 
 /// A collection of root clocks.
 ///
-/// You can obtain these using [`Imxrt::root_clocks`]. Note that
-/// an [`Imxrt`] MCU may not have implemented all root clocks. If
-/// that's the case, either contribute to the library, or construct
-/// the root clock yourself; see [`RootClock::new`].
+/// You can obtain these using [`Imxrt::all_root_clock_names`] or
+/// [`Imxrt::lookup_root_clock`]. Note that an [`Imxrt`] MCU may
+/// not have implemented all root clocks. If that's the case,
+/// either contribute to the library, or construct the root clock
+/// yourself; see [`RootClock::new`].
 ///
 ///
-/// Root clocks are identified by `SCREAMING_SNAKE_CASE`, just
-/// as they're named in the reference manual.
+/// Root clocks are identified by `SCREAMING_SNAKE_CASE`, no matter
+/// their notation in any reference manual.
 pub type RootClocks = BTreeMap<String, RootClock>;
 
 /// A valid root clock name.
 ///
-/// If you obtain one of these, you can infallibly retrieve the root
-/// clock using [`get`](Imxrt::get). You can obtain one of these using
-/// the methods on [`Imxrt`].
+/// You can obtain one of these using the methods on [`Imxrt`].
 #[derive(Debug, Clone, Copy)]
 pub struct RootClockName<'a>(&'a String);
 
@@ -126,9 +125,6 @@ impl Imxrt {
     /// Manipulates the CCM_OBS registers to measure the
     /// given `root_clock` frequencies. It delays 100ms
     /// before it starts polling for the frequencies.
-    ///
-    /// Use [`get`](Self::get) to create the collection
-    /// of root clocks.
     pub fn observe(
         &self,
         root_clocks: &[RootClockName],
@@ -140,7 +136,7 @@ impl Imxrt {
     /// Observe a root clock's frequencies with configurable delay.
     ///
     /// This is the same as [`observe`](Self::observe), and it gives
-    /// you the change to change the delay before sampling. The
+    /// you the chance to change the delay before sampling. The
     /// implementation enforces a minimum delay of 20ms.
     pub fn observe_with_delay(
         &self,
@@ -295,22 +291,22 @@ pub struct Frequencies {
 impl Frequencies {
     /// Return the current frequency measurement, in Hz.
     ///
-    /// Returns `None` if multiplication with the divider
-    /// occurred.
+    /// Returns `None` if the value appears invalid, either
+    /// due to reading or by scaling factors.
     pub const fn current(&self) -> Option<u32> {
         self.raw_current.checked_mul(self.divider)
     }
     /// Return the minimum frequency observed, in Hz.
     ///
-    /// Returns `None` if multiplication with the divider
-    /// occurred.
+    /// Returns `None` if the value appears invalid, either
+    /// due to reading or by scaling factors.
     pub const fn min(&self) -> Option<u32> {
         self.raw_min.checked_mul(self.divider)
     }
     /// Return the maximum frequency observed, in Hz.
     ///
-    /// Returns `None` if multiplication with the divider
-    /// occurred.
+    /// Returns `None` if the value appears invalid, either
+    /// due to reading or by scaling factors.
     pub const fn max(&self) -> Option<u32> {
         self.raw_max.checked_mul(self.divider)
     }
