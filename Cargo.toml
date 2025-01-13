@@ -16,4 +16,4 @@ authors = ["Ian McIntyre <me@mciantyre.dev>"]
 ccm-obs = { path = "ccm-obs" }
 
 clap = { version = "4.5.20" }
-probe-rs = { version = "0.24.0" }
+probe-rs = { version = "0.25.0" }
