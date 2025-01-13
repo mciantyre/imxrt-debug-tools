@@ -250,6 +250,32 @@ pub static IMXRT1170: LazyLock<Imxrt> = LazyLock::new(|| {
     }
 });
 
+/// Provides access to the `CCM_OBS` on the 1180 MCUs.
+///
+/// See [`Imxrt`] for more information.
+pub static IMXRT1180: LazyLock<Imxrt> = LazyLock::new(|| {
+    let root_clocks = vec![
+        root_clock("OSC_RC_24M", 2, 0),
+        root_clock("OSC_RC_400M", 3, 0),
+        root_clock("OSC_24M_OUT", 5, 0),
+        root_clock("PLL_480_OUT", 15, 0),
+        root_clock("PLL_480_DIV2", 16, 0),
+        root_clock("PLL_480_PFD0", 17, 0),
+        root_clock("PLL_480_PFD1", 18, 0),
+        root_clock("PLL_480_PFD2", 19, 0),
+        root_clock("PLL_480_PFD3", 20, 0),
+        root_clock("M33_CLK_ROOT", 129, 0),
+        root_clock("FLEXSPI1_CLK_ROOT", 149, 0),
+    ]
+    .into_iter()
+    .collect();
+
+    Imxrt {
+        ccm_obs: 0x4445_0000 + 0x4400,
+        root_clocks,
+    }
+});
+
 /// Frequency measurements provided by the CCM_OBS peripheral block.
 ///
 /// You may access the current, minimum, and maximum frequencies (Hz)

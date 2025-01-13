@@ -33,17 +33,20 @@ struct Cli {
 #[value(rename_all = "UPPER")]
 enum Mcu {
     Imxrt1170,
+    Imxrt1180,
 }
 
 impl Mcu {
     fn selection(&self) -> &'static Imxrt {
         match self {
             Self::Imxrt1170 => &ccm_obs::IMXRT1170,
+            Self::Imxrt1180 => &ccm_obs::IMXRT1180,
         }
     }
     fn probe_rs_name(&self) -> &'static str {
         match self {
             Self::Imxrt1170 => "MIMXRT1170",
+            Self::Imxrt1180 => "MIMXRT1189",
         }
     }
 }
