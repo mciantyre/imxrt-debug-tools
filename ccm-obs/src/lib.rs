@@ -227,6 +227,8 @@ pub static IMXRT1170: LazyLock<Imxrt> = LazyLock::new(|| {
         root_clock("BUS_CLK_LPSR_CLK_ROOT", 131, 0),
         root_clock("M4_SYSTICK_CLK_ROOT", 135, 0),
         root_clock("M7_SYSTICK_CLK_ROOT", 136, 2),
+        root_clock("FLEXSPI1_CLK_ROOT", 148, 2),
+        root_clock("FLEXSPI2_CLK_ROOT", 149, 2),
         root_clock("ENET1_CLK_ROOT", 179, 2),
         root_clock("ENET2_CLK_ROOT", 180, 2),
         root_clock("ENET_QOS_CLK_ROOT", 181, 2),
