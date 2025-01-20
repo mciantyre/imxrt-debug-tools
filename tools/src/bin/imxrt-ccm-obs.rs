@@ -27,6 +27,13 @@ struct Cli {
     /// Delay (ms) before sampling frequencies
     #[arg(long, default_value = "100")]
     delay_ms: Option<u64>,
+
+    /// Reset and halt the MCU before taking measurements.
+    ///
+    /// Useful for measuring the effects of the boot ROM based
+    /// on its execution path.
+    #[arg(long)]
+    after_halted_reset: bool,
 }
 
 #[derive(Clone, ValueEnum)]
@@ -98,6 +105,10 @@ fn main() {
         };
 
     let mut core = session.core(0).unwrap();
+
+    if cli.after_halted_reset {
+        core.reset_and_halt(Duration::from_millis(200)).unwrap();
+    }
 
     let delay = cli.delay_ms.map(Duration::from_millis).unwrap();
 
