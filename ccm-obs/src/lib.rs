@@ -236,6 +236,20 @@ pub static IMXRT1170: LazyLock<Imxrt> = LazyLock::new(|| {
         root_clock("ENET_TIMER3_CLK_ROOT", 185, 2),
         root_clock("OSC_RC_400M", 227, 0),
         root_clock("OSC_24M_OUT", 229, 0),
+        root_clock("SYS_PLL2_OUT", 233, 2),
+        root_clock("SYS_PLL2_PFD0", 234, 2),
+        root_clock("SYS_PLL2_PFD1", 235, 2),
+        root_clock("SYS_PLL2_PFD2", 236, 2),
+        root_clock("SYS_PLL2_PFD3", 237, 2),
+        root_clock("SYS_PLL3_OUT", 239, 2),
+        root_clock("SYS_PLL3_DIV2", 240, 2),
+        root_clock("SYS_PLL3_PFD0", 241, 2),
+        root_clock("SYS_PLL3_PFD1", 242, 2),
+        root_clock("SYS_PLL3_PFD2", 243, 2),
+        root_clock("SYS_PLL3_PFD3", 244, 2),
+        root_clock("SYS_PLL1_OUT", 246, 2),
+        root_clock("SYS_PLL1_DIV2", 247, 2),
+        root_clock("SYS_PLL1_DIV5", 248, 2),
     ]
     .into_iter()
     .collect();
