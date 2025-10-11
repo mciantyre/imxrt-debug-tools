@@ -216,10 +216,7 @@ fn root_clock(name: &'static str, select_index: u32, slice_number: u64) -> (Stri
     (name.into(), RootClock::new(select_index, slice_number))
 }
 
-/// Provides access to the CCM_OBS on 1170 MCUs.
-///
-/// See [`Imxrt`] for more information.
-pub static IMXRT1170: LazyLock<Imxrt> = LazyLock::new(|| {
+fn imxrt11xx() -> Imxrt {
     let root_clocks = vec![
         root_clock("M7_CLK_ROOT", 128, 4),
         root_clock("M4_CLK_ROOT", 129, 0),
@@ -260,7 +257,16 @@ pub static IMXRT1170: LazyLock<Imxrt> = LazyLock::new(|| {
         ccm_obs: 0x4015_0000,
         root_clocks,
     }
-});
+}
+/// Provides access to the CCM_OBS on 1170 MCUs.
+///
+/// See [`Imxrt`] for more information.
+pub static IMXRT1170: LazyLock<Imxrt> = LazyLock::new(imxrt11xx);
+
+/// Provides access to the `CCM_OBS` on the 1160 MCUs.
+///
+/// See [`Imxrt`] for more information.
+pub static IMXRT1160: LazyLock<Imxrt> = LazyLock::new(imxrt11xx);
 
 /// Provides access to the `CCM_OBS` on the 1180 MCUs.
 ///

@@ -5,7 +5,6 @@ use std::time::Duration;
 
 use ccm_obs::Imxrt;
 use clap::{error::ErrorKind, CommandFactory, Parser, ValueEnum};
-use probe_rs::Permissions;
 
 /// Query the CCM_OBS peripheral for root clock frequencies
 #[derive(Parser)]
@@ -39,6 +38,7 @@ struct Cli {
 #[derive(Clone, ValueEnum)]
 #[value(rename_all = "UPPER")]
 enum Mcu {
+    Imxrt1160,
     Imxrt1170,
     Imxrt1180,
 }
@@ -46,12 +46,14 @@ enum Mcu {
 impl Mcu {
     fn selection(&self) -> &'static Imxrt {
         match self {
+            Self::Imxrt1160 => &ccm_obs::IMXRT1160,
             Self::Imxrt1170 => &ccm_obs::IMXRT1170,
             Self::Imxrt1180 => &ccm_obs::IMXRT1180,
         }
     }
     fn probe_rs_name(&self) -> &'static str {
         match self {
+            Self::Imxrt1160 => "MIMXRT1160",
             Self::Imxrt1170 => "MIMXRT1170",
             Self::Imxrt1180 => "MIMXRT1189",
         }
@@ -94,7 +96,7 @@ fn main() {
     };
 
     let mut session =
-        match probe_rs::Session::auto_attach(cli.mcu.probe_rs_name(), Permissions::default()) {
+        match probe_rs::Session::auto_attach(cli.mcu.probe_rs_name(), Default::default()) {
             Ok(session) => session,
             Err(err) => Cli::command()
                 .error(
