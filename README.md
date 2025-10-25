@@ -30,6 +30,7 @@ The rest of this document summarizes the tools.
 The `imxrt-ccm-obs` command line tool uses your MCU's `CCM_OBS` peripheral block
 to measure root clock frequencies. The tool works for the following MCUs:
 
+- iMXRT1160
 - iMXRT1170
 - iMXRT1180
 
